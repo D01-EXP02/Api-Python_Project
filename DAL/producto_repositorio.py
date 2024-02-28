@@ -1,20 +1,18 @@
-from mysql.connector.abstracts import MySQLConnectionAbstract
-from mysql.connector.pooling import PooledMySQLConnection
-from Entity.producto import Producto, producto_respuesta
-from BLL.connection_db import ConnectionManager
+from Entity.producto import Producto
 
 
 class Producto_repositorio():
     def __init__(self, connection):
          self.connection = connection
 
-    def guardar_cliente(self, producto: Producto):
+    def guardar_producto(self, producto: Producto, id: int):
         cursor = self.connection.cursor()
-        sql = ("INSERT INTO producto(Nombre_producto,Valor) "
-               "values(%s,%s) ")
+        sql = ("INSERT INTO producto(Id_cliente,Nombre_producto,Valor) "
+               "values(%s,%s,%s) ")
 
         values = (
-            producto.nombre,
+            id,
+            producto.nombre_producto,
             producto.valor
         )
 

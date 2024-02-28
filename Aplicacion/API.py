@@ -10,16 +10,16 @@ routes = APIRouter()
 
 @routes.post("/Guardar_cliente")
 def All_cliente(datos: Cliente):
-    return clientes.consultar_cliente(datos)
+    return clientes.guardar_cliente(datos)
 
 @routes.get("/Consultar_ALL_clientes")
 def All_cliente():
     return clientes.consultar_cliente()
 
 @routes.get("/Consultar_clientes_por_Producto")
-def Cliente_producto():
-    return clientes.filtrar_cliente_producto()
+def Cliente_producto(identificacion: str):
+    return clientes.filtrar_cliente_producto(identificacion)
 
 @routes.post("/Registrar_Productos")
-def guardar_producto(informacion: Producto):
-    return productos.registrar_producto(informacion)
+def guardar_producto(informacion: Producto, id: int):
+    return productos.registrar_producto(informacion, id)

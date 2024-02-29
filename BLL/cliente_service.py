@@ -18,13 +18,8 @@ class Cliente_service():
         self.__connection_manager.close_connection()
         return dato_cliente
 
-    def filtrar_cliente_producto(self, info_cliente):
+    def filtrar_cliente_producto(self):
         self.__connection_manager.open_connection()
         lista_cliente = self.__Cliente_servicio.filtro_datos()
-
-        for item in lista_cliente:
-            if item.identificacion == info_cliente:
-                cliente_encontrado = item
-                return cliente_encontrado
-
+        self.__connection_manager.close_connection()
         return lista_cliente

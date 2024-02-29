@@ -17,8 +17,8 @@ def All_cliente():
     return clientes.consultar_cliente()
 
 @routes.get("/Consultar_clientes_por_Producto")
-def Cliente_producto(identificacion: str):
-    return clientes.filtrar_cliente_producto(identificacion)
+def Cliente_producto():
+    return clientes.filtrar_cliente_producto()
 
 @routes.post("/Registrar_Productos")
 def guardar_producto(informacion: Producto, id: int):

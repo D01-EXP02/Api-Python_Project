@@ -1,5 +1,7 @@
 from Entity.cliente import Cliente, Cliente_respuesta
 from Entity.producto import Producto_respuesta
+from mysql.connector.abstracts import MySQLConnectionAbstract
+from mysql.connector.pooling import PooledMySQLConnection
 
 class Cliente_repositorio():
     def __init__(self, connection):
@@ -12,7 +14,7 @@ class Cliente_repositorio():
         lista_sql = []
         cursor = self.connetion.cursor()
         cursor.execute(
-                "SELECT Nombre, Apellido, Identificacion, Sexo, Fecha_Nacimiento  "
+                "SELECT Nombre, Apellido, Identificacion, Fecha_Nacimiento, Sexo  "
                 "FROM clientes e "
                 "LEFT JOIN producto n "
                 "ON e.ID = n.Id_cliente "
@@ -20,12 +22,11 @@ class Cliente_repositorio():
 
         datos_cliente = cursor.fetchall()
         for item in datos_cliente:
-            lista_sql.append(self.mapear(item))
-
-        return lista_sql
+            lista_sql.append(self.mapear_cliente(item))
+        return  lista_sql
 
     def filtro_datos(self):
-        lista_sql = []
+        lista_sql_filtro = []
         cursor = self.connetion.cursor()
         cursor.execute(
             "SELECT Nombre, Apellido, Identificacion, Sexo, Fecha_Nacimiento, Valor, Nombre_Producto "
@@ -36,9 +37,9 @@ class Cliente_repositorio():
 
         datos_cliente = cursor.fetchall()
         for item in datos_cliente:
-            lista_sql.append(self.mapear(item))
+            lista_sql_filtro.append(self.mapear_filtro(item))
 
-        return lista_sql
+        return lista_sql_filtro
 
     def guardar_cliente(self, cliente: Cliente):
         cursor = self.connetion.cursor()
@@ -50,15 +51,15 @@ class Cliente_repositorio():
             cliente.apellido,
             cliente.identificacion,
             cliente.sexo,
-            str(cliente.fecha_nacimiento)
+            cliente.fecha_nacimiento
         )
 
         cursor.execute(sql,values)
         self.connetion.commit()
         cursor.close()
 
-    def mapear(self, registro):
-        nombre, apellido, identificacion, sexo, fecha_nacimiento, valor_producto, nombre_producto = registro
+    def mapear_filtro(self, registrofiltrar):
+        nombre, apellido, identificacion, sexo, fecha_nacimiento, valor_producto, nombre_producto = registrofiltrar
         return Cliente_respuesta(
             nombre=nombre,
             apellido=apellido,
@@ -69,4 +70,14 @@ class Cliente_repositorio():
                 nombre_producto=str(nombre_producto),
                 valor=int(valor_producto)
             )
+        )
+
+    def mapear_cliente(self, registro):
+        nombre, apellido, identificacion, fecha_nacimiento, sexo = registro
+        return Cliente_respuesta(
+            nombre=nombre,
+            apellido=apellido,
+            identificacion=identificacion,
+            fecha_nacimiento=fecha_nacimiento,
+            sexo=sexo,
         )

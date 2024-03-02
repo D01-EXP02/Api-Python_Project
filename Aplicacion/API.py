@@ -3,10 +3,12 @@ from Entity.cliente import Cliente
 from Entity.producto import Producto
 from BLL.cliente_service import Cliente_service
 from BLL.producto_service import Producto_service
+from BLL.connection_db import ConnectionManager
 
 clientes = Cliente_service()
 productos = Producto_service()
 routes = APIRouter()
+connection = ConnectionManager()
 
 @routes.post("/Guardar_cliente")
 def All_cliente(datos: Cliente):
